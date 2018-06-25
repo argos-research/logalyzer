@@ -47,6 +47,8 @@ public:
 		{ 0x7000, "L4_BASE_SCHEDULER_CAP" },
 		{ 0x8000, "PARENT_CAP" },
 		{ 0x9000, "MAIN_THREAD_CAP" },
+		{ 0xc000, "1st non-main thread's gate"},
+		{ 0xf000, "2nd non-main thread's gate"},
 	};
 };
 
