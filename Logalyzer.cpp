@@ -10,9 +10,7 @@
 
 Logalyzer::Logalyzer( const std::vector<std::string>& log_lines )
 {
-	std::string default_stage_name{ "default" };
-
-	_stages.emplace_back( std::make_shared<Stage>( default_stage_name ) );
+	_stages.emplace_back( std::make_shared<Stage>( DEFAULT_STAGE_NAME ) );
 
 	auto current_stage = _stages.back();
 
@@ -34,14 +32,14 @@ Logalyzer::Logalyzer( const std::vector<std::string>& log_lines )
 			auto& stage_name = tokens[1];
 
 			// only start changing stage names after encountering "start"
-			if( current_stage->name() != "default" || stage_name == "start" )
+			if( current_stage->name() != DEFAULT_STAGE_NAME || stage_name == "start" )
 			{
 				_stages.emplace_back( std::make_shared<Stage>( stage_name ) );
 				current_stage = _stages.back();
 			}
 
-			if( stage_name == "sleep_end" )
-				break;
+		//	if( stage_name == "sleep_end" )
+		//		break;
 		}
 		else if( event_type == "Capability_map" )
 		{
@@ -99,7 +97,9 @@ Logalyzer::Logalyzer( const std::vector<std::string>& log_lines )
 			auto badge = std::stoi( tokens[1], nullptr, 16 );
 			auto& label = tokens[3];
 
-			_current_task_name = label;
+			_current_task_name = tokens[1] + label;
+
+			std::cout << "current task name: " << _current_task_name << std::endl;
 
 			_l4objects.emplace( badge, std::make_shared<L4Task>( badge, label ) );
 		}
@@ -255,9 +255,16 @@ void Logalyzer::print_summary()
 		std::cout << "Active capabilities: " << std::dec << capmap.second.valid_caps() << std::endl;
 		capmap.second.print_info();
 	}
-
-	std::cout << std::endl;
 */
+	std::cout << std::endl;
+
+	std::cout << "List of capmaps: " << _capmaps.size() << std::endl;
+	for( auto& capmap : _capmaps )
+	{
+		std::cout << capmap.first << std::endl;
+	}
+	std::cout << std::endl;
+
 	auto& core_map = _capmaps[ TASK_NAME_CORE ];
 
 	std::cout << "Cap map of " << core_map.task_name() << std::endl;
@@ -287,6 +294,13 @@ void Logalyzer::print_summary()
 		if( it != _l4objects.end() )
 			std::cout << '\t' << it->second->description() << std::endl;
 		std::cout << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	for( auto& stage : _stages )
+	{
+		std::cout << stage->name() << std::endl;
 	}
 
 /*	for( auto& object : _l4objects )

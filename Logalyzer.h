@@ -27,6 +27,7 @@ private:
 public:
 	static constexpr const char DELIMITER = '|';
 	static constexpr const char* TASK_NAME_CORE = "core";
+	const std::string DEFAULT_STAGE_NAME = "default_stage"; // TODO: make static
 
 	Logalyzer( const std::vector<std::string>& log_lines );
 
