@@ -13,7 +13,7 @@ private:
 
 public:
 	Stage() = default;
-	explicit Stage( const std::string& name ) : _name( name ) {}
+	Stage( const std::string& name ) : _name( name ) {}
 
 	void add_event( const Event& event );
 	void add_event( const std::string& log_line );
