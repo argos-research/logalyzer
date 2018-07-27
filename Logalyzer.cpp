@@ -281,7 +281,14 @@ void Logalyzer::print_summary()
 
 	std::cout << std::endl;
 
-	auto& target_map = _capmaps[ _current_task_name ];
+//	auto& target_map = _capmaps[ _current_task_name ];
+
+	for( auto& capmap : _capmaps)
+	{
+		if( capmap.first.find("sheep") == std::string::npos )
+			continue;
+
+		auto& target_map = capmap.second;
 
 	std::cout << "Cap map of " << target_map.task_name() << std::endl;
 	std::cout << "Active capabilities: " << std::dec << target_map.valid_caps() << std::endl;
@@ -294,6 +301,8 @@ void Logalyzer::print_summary()
 		if( it != _l4objects.end() )
 			std::cout << '\t' << it->second->description() << std::endl;
 		std::cout << std::endl;
+	}
+
 	}
 
 	std::cout << std::endl;
